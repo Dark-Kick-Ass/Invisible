@@ -1,0 +1,38 @@
+local Players = game:GetService("Players")
+local seat = script.Parent
+local currentplayer = nil
+
+seat:GetPropertyChangedSignal("Occupant"):Connect(function()
+	local humanoid = seat.Occupant
+	if humanoid then
+		local character = humanoid.Parent
+		local player = Players:GetPlayerFromCharacter(character)
+		if player then
+			print(player.Name.." has sat down")
+			
+			
+			
+			currentplayer = player
+			Invisible(character, 1) -- Set transparency to 1
+			return
+		end
+	end
+	if currentplayer then
+		print(currentplayer.Name.." has got up")
+		
+	
+		local character = currentplayer.Character
+		Invisible(character, 0) -- -- Set transparency to 0
+		currentplayer = nil
+		return
+	end
+end)
+
+function Invisible(character, transparency) -- A function that identifies the revelant character, and changes the transparency according to what you input when you call the function.
+	for _, parts in pairs(character:GetDescendants()) do
+		if parts:IsA("BasePart") and parts.Name ~= "HumanoidRootPart" or parts:IsA("Decal") then
+			parts.Transparency = transparency
+			print(transparency)
+		end
+	end
+end
